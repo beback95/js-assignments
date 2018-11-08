@@ -30,7 +30,7 @@
  * @return {RegExp}
  */
 function getRegexForGuid() {
-  throw new Error('Not implemented');
+  return /\{\w{8}-\w{4}-\w{4}-\w{4}-[a-fA-F\d]{12}\}/;
 }
 
 
@@ -51,8 +51,8 @@ function getRegexForGuid() {
  * @return {RegExp}
  *
  */
-function getRegexForPitSpot() {
-  throw new Error('Not implemented');
+function getRegexForPitSpot() { 
+  return /[is]/;
 }
 
 
@@ -74,6 +74,8 @@ function getRegexForIPv4() {
   throw new Error('Not implemented');
 }
 
+// return /(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))/;
+
 
 /**
  * Returns the regexp that matches all SSN (Social Security Number) codes in
@@ -90,7 +92,7 @@ function getRegexForIPv4() {
  * @return {RegExp}
  */
 function getRegexForSSN() {
-  throw new Error('Not implemented');
+  return /^(?!000)\d{3}-(?!00)\d{2}-(?!0000)\d{4}/;
 }
 
 
@@ -112,11 +114,13 @@ function getRegexForSSN() {
  *   'Pa55Word'.match(validator)  => true
  *   'PASSw0rd'.match(validator)  => true
  *   'PASSW0RD'.match(validator)  => false
- *   'Pa55'.match(validator) => false
+ *   'Pa55'.match(validator) => d
  */
 function getPasswordValidator(minLength) {
   throw new Error('Not implemented');
 }
+
+// return new RegExp(`.*(?=.*[A-Z]).*(?=.*[a-z]).*(?=.*[0-9]).*(?!.*[_ ]).{${minLength},}`);
 
 module.exports = {
   getRegexForGuid: getRegexForGuid,

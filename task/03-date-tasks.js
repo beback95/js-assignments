@@ -58,7 +58,7 @@ function isLeapYear(date) {
   if (date.getFullYear() % 4 !== 0) { return false; } 
   else if (date.getFullYear() % 100 !== 0) { return true; } 
   else if (date.getFullYear() % 400 !== 0) { return false; }
-  else { return true; };
+  else { return true; }
 }
 
 
@@ -97,7 +97,7 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-  const hours = date.getUTCHours()
+  const hours = date.getUTCHours();
   const minutes = date.getUTCMinutes();
   const angle = Math.abs(0.5 * (hours % 12 * 60 - minutes * 11));
 

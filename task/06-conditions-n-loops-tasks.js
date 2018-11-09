@@ -53,13 +53,7 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-  let f = 1;
-
-  for(let i = 1; i < n; i++) {
-    f *= (i + 1);
-  }
-
-  return f;
+  return n > 1 ? n * getFactorial(n - 1) : 1; 
 }
 
 
@@ -133,7 +127,15 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-  throw new Error('Not implemented');
+  const rect1B = rect1.top + rect1.height;
+  const rect2B = rect2.top + rect2.height;
+  const rect1R = rect1.left + rect1.width;
+  const rect2R = rect2.left + rect2.width;
+
+  const x = (Math.min(rect1R, rect2R) - Math.max(rect1.left, rect2.left)) > 0;
+  const y = (Math.min(rect1B, rect2B) - Math.max(rect1.top, rect2.top)) > 0;
+
+  return x && y;
 }
 
 
@@ -377,7 +379,15 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-  throw new Error('Not implemented');
+  let newNum = '';
+
+  while(num >= 1) {
+    newNum += num % n;
+
+    num = Math.floor(num / n);
+  }
+
+  return newNum.split('').reverse().join('');
 }
 
 

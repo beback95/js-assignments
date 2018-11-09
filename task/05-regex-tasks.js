@@ -117,10 +117,10 @@ function getRegexForSSN() {
  *   'Pa55'.match(validator) => d
  */
 function getPasswordValidator(minLength) {
-  throw new Error('Not implemented');
-}
+  const criteries = `.*(?=.*[A-Z]).*(?=.*[a-z]).*(?=.*[0-9]).*(?!.*[_ ])`;
 
-// return new RegExp(`.*(?=.*[A-Z]).*(?=.*[a-z]).*(?=.*[0-9]).*(?!.*[_ ]).{${minLength},}`);
+  return new RegExp(`${criteries}.{${minLength},}`);
+}
 
 module.exports = {
   getRegexForGuid: getRegexForGuid,

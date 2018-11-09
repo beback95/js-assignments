@@ -225,15 +225,11 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-  return str.split('').map(elem => {
-    if(/[a-mA-M]/.test(elem)) {
-      return String.fromCharCode(elem.charCodeAt() + 13);
-    } else if(/[n-zN-Z]/.test(elem)) {
-      return String.fromCharCode(elem.charCodeAt() - 13);
-    } else {
-      return elem;
-    }
-  }).join('');
+  return str.replace(/[a-zA-Z]/g, char => {
+    const code = char.charCodeAt() + (char.toLowerCase() < 'n' ? 13 : -13);
+
+    return String.fromCharCode(code);
+  });
 }
 
 /**
@@ -281,9 +277,10 @@ function isString(value) {
 
 
 function getCardId(value) {
-  return ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
-    .indexOf(value.slice(0, -1)) + ['♣', '♦', '♥', '♠']
-    .lastIndexOf(value[value.length - 1]) * 13;
+  const r = 'A234567891JQK';
+  const s = '♣♦♥♠';
+  
+  return r.indexOf(value[0]) + s.lastIndexOf(value[value.length - 1]) * 13;
 }
 
 module.exports = {

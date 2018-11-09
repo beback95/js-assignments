@@ -72,7 +72,7 @@ function getAverage(value1, value2) {
  *   (-5,0) (10,-10) => 18.027756377319946
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-  return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+  return Math.hypot((x2 - x1), (y2 - y1));
 }
 
 /**
@@ -160,7 +160,7 @@ function parseNumberFromString(value) {
  *   1,2,3   => 3.741657386773941
  */
 function getParallelipidedDiagonal(a, b, c) {
-  return Math.sqrt(a * a + b * b + c * c);
+  return Math.hypot(a, b, c);
 }
 
 /**
@@ -181,7 +181,9 @@ function getParallelipidedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  return Math.round(num / Math.pow(10, pow)) * Math.pow(10, pow);
+  const pow10 = Math.pow(10, pow);
+
+  return Math.round(num / pow10) * pow10;
 }
 
 /**
@@ -202,16 +204,17 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  if(n === 2 || n === 3) return true;
-  else if(n <= 1 || n % 2 === 0 || n % 3 === 0) return false;
-
-  let prime = true;
-
-  for(let i = 5; i * i <= n; i += 6) {
-    prime = n % i === 0 || n % (i + 2) === 0 ? false : true;
+  if(n < 2 ) {
+    return false;
   }
 
-  return prime;
+  for(let i = 2, l = Math.sqrt(n); i <= l; i++) {
+    if(n % i === 0) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /**

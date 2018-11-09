@@ -184,7 +184,13 @@ function isInsideCircle(circle, point) {
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-  throw new Error('Not implemented');
+  for(let i = 0, l = str.length; i < l; i++) {
+    if(!str.split('').filter((e, _i) => _i !== i).join('').includes(str[i])) {
+      return str[i];
+    }
+  }
+
+  return null;
 }
 
 
@@ -273,7 +279,21 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-  throw new Error('Not implemented');
+  let sum = ccn.toString().split('').reverse().map((num, index) => {
+    if(index % 2) {
+      const double = num * 2;
+      return double > 9 ? double - 9 : double;
+    }
+
+    return +num;
+  }).reduce((acc, elem, index, arr) => {
+    return index !== 0 ? acc + elem : acc;
+  }, 0);
+
+  sum = sum % 10 === 0 ? 0 : 10 - sum % 10;
+  const ccnStr = ccn.toString();
+
+  return sum === +ccnStr[ccnStr.length - 1] % 10;                     
 }
 
 
@@ -292,7 +312,9 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-  throw new Error('Not implemented');
+  const root = num.toString().split('').reduce((acc, elem) => acc + +elem, 0);
+
+  return root > 9 ? getDigitalRoot(root) : root;
 }
 
 
@@ -318,7 +340,21 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true
  */
 function isBracketsBalanced(str) {
-  throw new Error('Not implemented');
+  const stack = [];
+  const map = { ']': '[', ')': '(', '}': '{', '>': '<' };
+
+  for(let i = 0, l = str.length; i < l; i++) {
+    if (/[([{<]/.test(str[i])) {
+      stack.push(str[i]); 
+    } else if (/[)\]}>]/.test(str[i]) 
+      && stack[stack.length - 1] === map[str[i]]) {
+      stack.pop();
+    } else {
+      stack.push(str[i]); 
+    }
+  }
+
+  return !stack.length;
 }
 
 
@@ -357,7 +393,6 @@ function timespanToHumanString(startDate, endDate) {
   throw new Error('Not implemented');
 }
 
-
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n<=10) representation of
  * specified number.
@@ -383,7 +418,6 @@ function toNaryString(num, n) {
 
   while(num >= 1) {
     newNum += num % n;
-
     num = Math.floor(num / n);
   }
 

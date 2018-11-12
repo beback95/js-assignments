@@ -390,7 +390,31 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-  throw new Error('Not implemented');
+  const time = (endDate - startDate);
+
+  if (time <= 45 * 1000) {
+    return 'a few seconds ago';
+  } else if (time <= 90 * 1000) {
+    return 'a minute ago';
+  } else if (time <= 45 * 60 * 1000) {
+    return `${Math.round((time - 1) / 60 / 1000)} minutes ago`;
+  } else if (time <= 90 * 60 * 1000) {
+    return 'an hour ago';
+  } else if (time <= 22 * 60 * 60 * 1000) {
+    return `${Math.round((time - 1) / 60 / 60 / 1000)} hours ago`;
+  } else if (time <= 36 * 60 * 60 * 1000) {
+    return 'a day ago';
+  } else if (time <= 25 * 24 * 60 * 60 * 1000) {
+    return `${Math.round((time - 1) / 24 / 60 / 60 / 1000)} days ago`;
+  } else if (time <= 45 * 24 * 60 * 60 * 1000) {
+    return 'a month ago';
+  } else if (time <= 345 * 24 * 60 * 60 * 1000) {
+    return `${Math.round(time / 30 / 24 / 60 / 60 / 1000)} months ago`;
+  } else if (time <= 545 * 24 * 60 * 60 * 1000) {
+    return 'a year ago';
+  }
+    
+  return `${Math.round(time / 365 / 24 / 60 / 60 / 1000)} years ago`;
 }
 
 /**
@@ -438,7 +462,23 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-  throw new Error('Not implemented');
+  let path = '';
+  for (let i = 0; i < pathes[0].length; i++) {
+    let flag = true;
+    for (let j = 1; j < pathes.length; j++) {
+      if (pathes[0][i] !== pathes[j][i]) {
+        flag = false;
+        break;
+      }
+    }
+
+    if (flag) {
+      path += pathes[0][i];
+    } else {
+      break;
+    }
+  }
+  return path.slice(0, path.lastIndexOf('/') + 1);
 }
 
 
@@ -461,7 +501,23 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-  throw new Error('Not implemented');
+  const m3 = [];
+
+  for (let i = 0, l = m1.length; i < l; i++) m3[i] = [];
+
+  for(let i = 0, l1 = m2[0].length; i < l1; i++) {
+    for(let j = 0, l2 = m1.length; j < l2; j++) {
+      let sum = 0;
+
+      for(let k = 0, l3 = m2.length; k < l3; k++) {
+        sum += m1[j][k] * m2[k][i];
+      }
+
+      m3[j][i] = sum;
+    }
+  }
+
+  return m3;
 }
 
 

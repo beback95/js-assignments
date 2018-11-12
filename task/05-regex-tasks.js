@@ -71,11 +71,8 @@ function getRegexForPitSpot() {
  * @return {RegExp}
  */
 function getRegexForIPv4() {
-  throw new Error('Not implemented');
+  return /^(([01]?\d?\d|2[0-4]\d|25[0-5])\.){3}([0-1]?\d?\d|2[0-4]\d|25[0-5])$/;
 }
-
-// return /(([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))\.){3}([01]?[0-9]?[0-9]|2([0-4][0-9]|5[0-5]))/;
-
 
 /**
  * Returns the regexp that matches all SSN (Social Security Number) codes in

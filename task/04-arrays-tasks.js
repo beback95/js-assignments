@@ -291,9 +291,8 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-  throw new Error('Not implemented');
+  return arr.sort((first, second) => second - first).slice(0, 3);
 }
-
 
 /**
  * Returns the number of positive numbers from specified array
@@ -325,8 +324,10 @@ function getPositivesCount(arr) {
  *   [ 'nine','eight','nine','eight'] => [ 'eight','eight','nine','nine']
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(arr) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(a) {
+  const m = ['ze', 'on', 'tw', 'th', 'fo', 'fi', 'si', 'se', 'ei', 'ni'];
+
+  return a.sort((a, b) => m.indexOf(a.slice(0, 2)) - m.indexOf(b.slice(0, 2)));
 }
 
 /*

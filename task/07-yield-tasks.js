@@ -98,8 +98,6 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-
-
   throw new Error('Not implemented');
 }
 

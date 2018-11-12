@@ -554,25 +554,25 @@ function getMatrixProduct(m1, m2) {
 function evaluateTicTacToePosition(position) {
   const rotate = matrix => {
     const flipMatrix = matrix => (
-      matrix[0].map((column, index) => (
+      matrix[0].map((column, index) => 
         matrix.map(row => row[index])
-      ))
+      )
     );
 
     return flipMatrix(matrix.reverse());
   };
 
 
-  const getDiagonals = matrix => {
+  const getDiagonal = matrix => {
     return matrix.reduce((acc, row, rowIndex) => {
       return acc.concat(row.find((elem, colIndex) => rowIndex === colIndex));
     }, []);
-  }
+  };
 
   const rows = position.map(elem => elem.join(''));
   const cols = rotate(position).map(elem => elem.join(''));
-  const mainDiagonal = getDiagonals(position).join('');
-  const sideDiagonal = getDiagonals(rotate(position)).join('');  
+  const mainDiagonal = getDiagonal(position).join('');
+  const sideDiagonal = getDiagonal(rotate(position)).join('');  
   const elements = [...rows, ...cols, mainDiagonal, sideDiagonal];
 
   return elements.reduce((acc, elem) => {

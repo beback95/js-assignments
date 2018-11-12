@@ -552,7 +552,51 @@ function getMatrixProduct(m1, m2) {
  *
  */
 function evaluateTicTacToePosition(position) {
-  throw new Error('Not implemented');
+  const rotateMatrix = () => {
+    const tempRotate = [];
+
+    for(let i = 0; i < position.length; i++) {
+      tempRotate[i] = [];
+    }
+  
+    for(let i = 0; i < position.length; i++) {
+      for(let j = position[i].length - 1; j >= 0; j--) {
+        tempRotate[i].push(position[j][i]);
+      }
+    }
+
+    return tempRotate;
+  };
+
+  const checkRow = matrix => {
+    for(let i = 0; i < matrix.length; i++) {
+      const row = matrix[i].filter(elem => elem);
+
+      if(row.length === 3 
+          && (row.every(elem => elem === 'X') 
+          || row.every(elem => elem === '0'))) {
+        return row[0];
+      }
+    }
+  };
+
+  const checkDiagonals = matrix => {
+    const temp = [];
+
+    for(let i = 0; i < matrix.length; i++) {
+      for(let j = 0; j < matrix[i].length; j++) {
+        if(i === j) {
+          temp.push(matrix[i][j]);
+        }
+      }
+    }
+
+    return temp.every(elem => elem === 'X') 
+      || temp.every(elem => elem === '0') ? temp[0] : undefined;
+  };
+
+  return checkRow(position) || checkRow(rotateMatrix(position)) 
+    || checkDiagonals(position) || checkDiagonals(rotateMatrix(position));
 }
 
 module.exports = {

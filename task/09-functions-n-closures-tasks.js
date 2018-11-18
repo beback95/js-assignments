@@ -109,9 +109,18 @@ function memoize(func) {
  * retryer() => 2
  */
 function retry(func, attempts) {
-  throw new Error('Not implemented');
-}
+  let times = 0;
 
+  return () => {
+    while(times <= attempts) {
+      try {
+        return func();
+      } catch(e) {
+        if(++times === attempts) throw new Error(e);
+      }
+    }
+  };
+}
 
 /**
  * Returns the logging wrapper for the specified method,

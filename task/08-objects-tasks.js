@@ -117,34 +117,175 @@ function fromJSON(proto, json) {
  *  For more examples see unit tests.
  */
 
+const PART_ENUM = {
+  NONE: 0,
+  ELEMENT: 1,
+  ID: 2,
+  CLASS: 3,
+  ATTR: 4,
+  PSEUDOCLASS: 5,
+  PSEUDOELEMENT: 6
+};
+
+
+class CssSelector {
+  constructor() { 
+    this._element = ''; 
+    this._id = ''; 
+    this._class = []; 
+    this._attr = []; 
+    this._pseudoClass = []; 
+    this._pseudoElement = '';
+    this._lastPart = PART_ENUM.NONE;
+  }
+
+  element(value) {
+    if(this._element.length) {
+      // eslint-disable-next-line
+      throw Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
+    this.checkPart(PART_ENUM.ELEMENT);
+    this._element = value;
+    return this;
+  }
+
+  getElement() {
+    return this._element;
+  }
+
+  id(value) {
+    if(this._id.length) {
+      // eslint-disable-next-line
+      throw Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
+    this.checkPart(PART_ENUM.ID);
+    this._id = value;
+    return this;
+  }
+
+  getId() {
+    return this._id ? `#${ this._id}` : '';
+  }
+
+  class(value) {
+    this.checkPart(PART_ENUM.CLASS);
+    this._class.push(value);
+    return this;
+  }
+
+  getClass() {
+    return this._class.map(_class => `.${_class}`).join('');
+  }
+
+  attr(value) {
+    this.checkPart(PART_ENUM.ATTR);
+    this._attr.push(value);
+    return this;
+  }
+
+  getAttr() {
+    return this._attr.map(_attr => `[${_attr}]`).join('');
+  }
+
+  pseudoClass(value) {
+    this.checkPart(PART_ENUM.PSEUDOCLASS);
+    this._pseudoClass.push(value);
+    return this;
+  }
+
+  getPseudoClass() {
+    return this._pseudoClass.map(_pseudoClass => `:${_pseudoClass}`).join('');
+  }
+
+  pseudoElement(value) {
+    if(this._pseudoElement.length) {
+      // eslint-disable-next-line
+      throw Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+
+    this.checkPart(PART_ENUM.PSEUDOELEMENT);
+    this._pseudoElement = value;
+    return this;
+  }
+
+  getPseudoElement() {
+    return this._pseudoElement ? `::${this._pseudoElement}` : '';
+  }
+
+  stringify() {
+    // eslint-disable-next-line
+    return `${this.getElement()}${this.getId()}${this.getClass()}${this.getAttr()}${this.getPseudoClass()}${this.getPseudoElement()}`;
+  }
+
+  checkPart(currentPart) {
+    if(currentPart < this._lastPart) {
+      // eslint-disable-next-line
+      throw new Error("Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element");
+    }
+    this._lastPart = currentPart;
+  }
+}
+
+class SelectorsCombination {
+  constructor() {
+    this._selectors = [];
+    this._combinators = [];
+  }
+
+  setSelectors(...selectors) {
+    this._selectors.push(...selectors);
+  }
+
+  setCombinators(combinator) {
+    this._combinators.push(` ${combinator} `);
+  }
+
+  stringify() {
+    let combination = '';
+
+    for(let i = 0; i < this._combinators.length; i++) {
+      // eslint-disable-next-line
+      combination += this._selectors[i].stringify() + this._combinators[i] + this._selectors[i + 1].stringify();
+    }
+
+    return combination;
+  }
+}
+
 const cssSelectorBuilder = {
 
   element(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().element(value);
   },
 
   id(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().id(value);
   },
 
   class(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().class(value);
   },
 
   attr(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().attr(value);
   },
 
   pseudoClass(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().pseudoClass(value);
   },
 
   pseudoElement(value) {
-    throw new Error('Not implemented');
+    return new CssSelector().pseudoElement(value);
   },
 
   combine(selector1, combinator, selector2) {
-    throw new Error('Not implemented');
+    const combination = new SelectorsCombination();
+    combination.setSelectors(selector1, selector2);
+    combination.setCombinators(combinator);
+
+    return combination;
   }
 };
 

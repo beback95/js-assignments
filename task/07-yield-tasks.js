@@ -98,7 +98,17 @@ function* getFibonacciSequence() {
  *
  */
 function* depthTraversalTree(root) {
-  throw new Error('Not implemented');
+  const nodes = [root];
+
+  for (let i = 0; i < nodes.length; i++) {
+    yield nodes[i];
+
+    if (nodes[i].children) {
+      for (let j = 0; j < nodes[i].children.length; j++) {
+        nodes.splice(i + 1 + j, 0, nodes[i].children[j]);
+      }
+    }
+  }
 }
 
 
@@ -123,10 +133,23 @@ function* depthTraversalTree(root) {
  *           8
  *
  */
-function* breadthTraversalTree(root) {
-  throw new Error('Not implemented');
-}
 
+function* breadthTraversalTree(root) {
+  const queue = [root];
+  let currentIndex = 0;
+
+  while(queue.length > 0) {
+    const current = queue[currentIndex++];
+
+    if(!current) return;
+
+    if(current.children) {
+      queue.push(...current.children);
+    }
+
+    yield current;
+  }
+}
 
 /**
  * Merges two yield-style sorted sequences into the one sorted sequence.
@@ -142,7 +165,29 @@ function* breadthTraversalTree(root) {
  *   [ 1, 3, 5, ... ], [ -1 ] => [ -1, 1, 3, 5, ...]
  */
 function* mergeSortedSequences(source1, source2) {
-  throw new Error('Not implemented');
+  const src1 = source1();
+  const src2 = source2();
+
+  let val1 = src1.next().value;
+  let val2 = src2.next().value;
+
+  while(true) {
+    if(val1 < val2) {
+      yield val1;
+      val1 = src1.next().value;
+    } else if(val1 > val2) {
+      yield val2;
+      val2 = src2.next().value;
+    } else if(val1 !== undefined) {
+      yield val1;
+      val1 = src1.next().value;
+    } else if(val2 !== undefined) {
+      yield val2;
+      val2 = src2.next().value;
+    } else {
+      return;
+    }
+  }
 }
 
 module.exports = {

@@ -12,9 +12,12 @@
  *   'abcdefghijklmnop',  'lmnopqrstuvwxyz'  => 'abcdefghijklmnopqrstuvwxyz'
  */
 function distinctLettersString(value1, value2) {
-  throw new Error('Not implemented');
+  return Object.keys(`${value1}${value2}`.split('').reduce((acc, char) => {
+    return acc[char] ? acc : Object.assign(acc, { [char]: 'exist' });
+  }, {})).sort((a,b) => {
+    return a.charCodeAt() - b.charCodeAt();
+  }).join('');
 }
-
 
 /**
  * Takes a string with any characters.
@@ -29,7 +32,14 @@ function distinctLettersString(value1, value2) {
  */
 
 function lowerLetters(value) {
-  throw new Error('Not implemented');
+  return value.match(/([a-z])/g).reduce((acc, char) => {
+    if(acc[char]) {
+       acc[char]++;
+       return acc;
+    } else {
+      return Object.assign(acc, { [char]: 1 });
+    }
+  }, {});
 }
 
 /**
@@ -45,13 +55,28 @@ function lowerLetters(value) {
  * @return {string}
  *
  * @example
- *    'a clash if KINGS', 'a an the of'  =>  'A Clash of Kings'
+ *    'a clash of KINGS', 'a an the of'  =>  'A Clash of Kings'
  *    'THE WIND IN THE WILLOWS', 'The In'  => 'The Wind in the Willows'
  *    'the quick brown fox'  => 'The Quick Brown Fox'
  */
 
+String.prototype.toTitleCase = function() {
+  return `${this[0].toUpperCase()}${this.slice(1).toLowerCase()}`;
+}
+
 function titleCaseConvert(title, minorWords) {
-  throw new Error('Not implemented');
+  const titleWords = title.split(' ');
+  const _minorWords = minorWords ? minorWords.toLowerCase().split(' ') : '';
+
+  for(let i = 0, length = titleWords.length; i < length; i++) {
+    if(i === 0 || _minorWords.indexOf(titleWords[i].toLowerCase()) === -1) {
+      titleWords[i] = titleWords[i].toTitleCase();
+    } else {
+      titleWords[i] = titleWords[i].toLowerCase();
+    }
+  }
+
+  return titleWords.join(' ');
 }
 
 /**
@@ -72,7 +97,25 @@ function titleCaseConvert(title, minorWords) {
  */
 
 function calcRPN(expr) {
-  throw new Error('Not implemented');
+  const stack = [];
+  const elements = expr.split(' ');
+
+  for(let i = 0, length = elements.length; i < length; i++) {
+    if(/[\+\-\/\*]/.test(elements[i])) {
+      const operand1 = stack.pop();
+      const operand2 = stack.pop();
+
+      stack.push(eval(`${operand2}${elements[i]}${operand1}`));
+    } else {
+      stack.push(elements[i]);
+    }
+  }
+
+  if(expr) {
+    return stack[stack.length - 1];
+  } 
+
+  return 0;
 }
 
 module.exports = {

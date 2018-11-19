@@ -36,7 +36,39 @@
  *
  */
 function parseBankAccount(bankAccount) {
-  throw new Error('Not implemented');
+  const line1 = ' _     _  _     _  _  _  _  _ ';
+  const line2 = '| |  | _| _||_||_ |_   ||_||_|';
+  const line3 = '|_|  ||_  _|  | _||_|  ||_| _|';
+
+  const getAssociate = () => {
+    const obj = [];
+
+    for(let i = 0, length = line1.length / 3; i < length; i++) {
+      const indexI = i * 3;
+      const indexJ = indexI + 3;
+      // eslint-disable-next-line
+      obj[i] = `${line1.substring(indexI, indexJ)}${line2.substring(indexI, indexJ)}${line3.substring(indexI, indexJ)}`;
+    }
+
+    return obj;
+  };
+
+  this.associate = this.associate ? this.associate : getAssociate();
+  
+  let result = '';
+
+  const lines = bankAccount.split('\n');
+
+  for(let i = 0, length = lines[0].length / 3; i < length; i++) {
+    const indexI = i * 3;
+    const indexJ = indexI + 3;
+    // eslint-disable-next-line
+    const str = `${lines[0].substring(indexI, indexJ)}${lines[1].substring(indexI, indexJ)}${lines[2].substring(indexI, indexJ)}`;
+
+    result += this.associate.indexOf(str);
+  }
+
+  return Number.parseInt(result, 10);
 }
 
 
@@ -68,7 +100,19 @@ function parseBankAccount(bankAccount) {
  *      'characters.'
  */
 function* wrapText(text, columns) {
-  throw new Error('Not implemented');
+  const words = text.split(' ');
+  let str = '';
+
+  while(words.length) {
+    if(`${str}${words[0]}`.length > columns) {
+      yield str.trim();
+      str = '';
+    }
+
+    str += `${words.shift()} `;
+  }
+
+  yield str.trim();
 }
 
 

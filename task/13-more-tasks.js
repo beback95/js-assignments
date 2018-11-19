@@ -14,7 +14,7 @@
 function distinctLettersString(value1, value2) {
   return Object.keys(`${value1}${value2}`.split('').reduce((acc, char) => {
     return acc[char] ? acc : Object.assign(acc, { [char]: 'exist' });
-  }, {})).sort((a,b) => {
+  }, {})).sort((a, b) => {
     return a.charCodeAt() - b.charCodeAt();
   }).join('');
 }
@@ -34,8 +34,8 @@ function distinctLettersString(value1, value2) {
 function lowerLetters(value) {
   return value.match(/([a-z])/g).reduce((acc, char) => {
     if(acc[char]) {
-       acc[char]++;
-       return acc;
+      acc[char]++;
+      return acc;
     } else {
       return Object.assign(acc, { [char]: 1 });
     }
@@ -62,7 +62,7 @@ function lowerLetters(value) {
 
 String.prototype.toTitleCase = function() {
   return `${this[0].toUpperCase()}${this.slice(1).toLowerCase()}`;
-}
+};
 
 function titleCaseConvert(title, minorWords) {
   const titleWords = title.split(' ');
@@ -101,7 +101,7 @@ function calcRPN(expr) {
   const elements = expr.split(' ');
 
   for(let i = 0, length = elements.length; i < length; i++) {
-    if(/[\+\-\/\*]/.test(elements[i])) {
+    if(/[+\-/*]/.test(elements[i])) {
       const operand1 = stack.pop();
       const operand2 = stack.pop();
 

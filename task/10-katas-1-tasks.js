@@ -56,7 +56,24 @@ function createCompassPoints(sides = ['N', 'E', 'S', 'W']) {
  *   'nothing to do' => 'nothing to do'
  */
 function* expandBraces(str) {
-  throw new Error('Not implemented');
+  const toExpand = [str];
+  const expanded = [];
+
+	while (toExpand.length > 0) {
+		const string = toExpand.pop();
+    matched = string.match(/{([^{}]*)}/);
+
+    if(matched) {
+      const replacements = matched[1].split(',');
+
+      for (let replacement of replacements) {
+				toExpand.push(string.replace(matched[0], replacement));
+			}
+    } else if (!expanded.includes(string)) {
+			expanded.push(string);
+			yield string;
+		}
+  }
 }
 
 
@@ -91,7 +108,6 @@ function* expandBraces(str) {
 function getZigZagMatrix(n) {
   throw new Error('Not implemented');
 }
-
 
 /**
  * Returns true if specified subset of dominoes can be placed in a row accroding to the game rules.

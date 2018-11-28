@@ -26,7 +26,7 @@ function createCompassPoints(sides = ['N', 'E', 'S', 'W']) {
  * See https://en.wikipedia.org/wiki/Bash_(Unix_shell)#Brace_expansion
  *
  * In the input string, balanced pairs of braces containing comma-separated substrings
- * represent alternations that specify multiple alternatives which are to appear 
+ * represent alternations that specify multiple alternatives which are to appear
  * at that position in the output.
  *
  * @param {string} str
@@ -59,20 +59,21 @@ function* expandBraces(str) {
   const toExpand = [str];
   const expanded = [];
 
-	while (toExpand.length > 0) {
-		const string = toExpand.pop();
-    matched = string.match(/{([^{}]*)}/);
+  while (toExpand.length > 0) {
+    const string = toExpand.pop();
+    const matched = string.match(/{([^{}]*)}/);
 
     if(matched) {
       const replacements = matched[1].split(',');
 
-      for (let replacement of replacements) {
-				toExpand.push(string.replace(matched[0], replacement));
-			}
+      for (const replacement of replacements) {
+        toExpand.push(string.replace(matched[0], replacement));
+      }
+
     } else if (!expanded.includes(string)) {
-			expanded.push(string);
-			yield string;
-		}
+      expanded.push(string);
+      yield string;
+    }
   }
 }
 
@@ -80,7 +81,7 @@ function* expandBraces(str) {
 /**
  * Returns the ZigZag matrix
  *
- * The fundamental idea in the JPEG compression algorithm is to sort coefficient 
+ * The fundamental idea in the JPEG compression algorithm is to sort coefficient
  * of given image by zigzag path and encode it.
  * In this task you are asked to implement a simple method to create a zigzag square matrix.
  * See details at https://en.wikipedia.org/wiki/JPEG#Entropy_coding
@@ -114,7 +115,7 @@ function getZigZagMatrix(n) {
  * Dominoes details see at: https://en.wikipedia.org/wiki/Dominoes
  *
  * Each domino tile presented as an array [x,y] of tile value.
- * For example, the subset [1, 1], [2, 2], [1, 2] can be arranged in a row 
+ * For example, the subset [1, 1], [2, 2], [1, 2] can be arranged in a row
  *  (as [1, 1] followed by [1, 2] followed by [2, 2]),
  * while the subset [1, 1], [0, 3], [1, 4] can not be arranged in one row.
  * NOTE that as in usual dominoes playing any pair [i, j] can also be treated as [j, i].
@@ -140,10 +141,10 @@ function canDominoesMakeRow(dominoes) {
  *
  * A format for expressing an ordered list of integers is to use a comma separated list of either:
  *   - individual integers
- *   - or a range of integers denoted by the starting integer separated from the end 
+ *   - or a range of integers denoted by the starting integer separated from the end
  *     integer in the range by a dash, '-'.
  *     (The range includes all integers in the interval including both endpoints)
- *     The range syntax is to be used only for, and for every range that expands to 
+ *     The range syntax is to be used only for, and for every range that expands to
  *     more than two values.
  *
  * @params {array} nums

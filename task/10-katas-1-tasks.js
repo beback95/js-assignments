@@ -16,8 +16,44 @@
  *  ]
  */
 function createCompassPoints(sides = ['N', 'E', 'S', 'W']) {
-  /* use array of cardinal directions only! it is a default parameter! */
-  throw new Error('Not implemented');
+  const array = [];
+  let azimuth = 0;
+  let abbreviation = '';
+  sides.push(sides[0]);
+
+  const getAbbreviation = (function () {
+    let counter = 0;
+
+    return function(current, next, numberSide) {
+      const middle = numberSide % 2 ? `${next}${current}` : `${current}${next}`;
+      counter++;
+
+      switch(counter) {
+      case 1: return `${current}`;
+      case 2: return `${current}b${next}`;
+      case 3: return `${current}${middle}`;
+      case 4: return `${middle}b${current}`;
+      case 5: return `${middle}`;
+      case 6: return `${middle}b${next}`;
+      case 7: return `${next}${middle}`;
+      case 8: return `${next}b${current}`;
+      default: counter = 0;
+      }
+    };
+  })();
+
+  for(let i = 0, l = sides.length - 1; i < l; i++) {
+    while((abbreviation = getAbbreviation(sides[i], sides[i + 1], i))) {
+      array.push({
+        abbreviation,
+        azimuth
+      });
+
+      azimuth += 11.25;
+    }
+  }
+
+  return array;
 }
 
 

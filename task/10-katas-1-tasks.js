@@ -28,7 +28,7 @@ function createCompassPoints(sides = ['N', 'E', 'S', 'W']) {
       const middle = numberSide % 2 ? `${next}${current}` : `${current}${next}`;
       counter++;
 
-      switch(counter) {
+      switch (counter) {
       case 1: return `${current}`;
       case 2: return `${current}b${next}`;
       case 3: return `${current}${middle}`;
@@ -142,8 +142,41 @@ function* expandBraces(str) {
  *          [ 9,10,14,15 ]]
  *
  */
+
 function getZigZagMatrix(n) {
-  throw new Error('Not implemented');
+  function generateArr(n) {
+    return Array.from({ length: n }, () => Array.from({length: n }, () => 0));
+  }
+
+  const array = generateArr(n);
+  let row = 0;
+  let column = 0;
+
+  for(let val = 0, length = Math.pow(n, 2); val < length; val++) {
+    array[row][column] = val;
+
+    if ((row + column) % 2 === 0) {
+      if (column + 1 < n) {
+        column++;
+      } else {
+        row += 2;
+      }
+      if (row > 0) {
+        row--;
+      }
+    } else {
+      if (row + 1 < n) {
+        row++;
+      } else {
+        column += 2;
+      }
+      if (column > 0) {
+        column--;
+      }
+    }
+  }
+
+  return array;
 }
 
 /**
@@ -168,7 +201,28 @@ function getZigZagMatrix(n) {
  *
  */
 function canDominoesMakeRow(dominoes) {
-  throw new Error('Not implemented');
+  const _dominoes = dominoes.slice();
+  let currentDomino = _dominoes.shift();
+  let counter = 0;
+
+  while(dominoes.length > counter) {
+    for(let i = 0, l = _dominoes.length; i < l; i++) {
+      const domino = _dominoes[i];
+
+      const contains = currentDomino.some(value => {
+        return domino && (value === domino[0] ||
+        value === domino[1]);
+      });
+
+      if(contains) {
+        currentDomino = _dominoes.splice(i, 1)[0];
+      }
+    }
+
+    counter++;
+  }
+
+  return !_dominoes.length;
 }
 
 
@@ -194,8 +248,44 @@ function canDominoesMakeRow(dominoes) {
  * [ 1, 2, 4, 5]          => '1,2,4,5'
  */
 function extractRanges(nums) {
-  throw new Error('Not implemented');
+  const _nums = nums.slice();
+  const ranges = [];
+  let start = 0;
+  let end = 0;
+
+  while (_nums.length) {
+    start = _nums.shift();
+    end = start;
+
+    while (_nums.length && _nums[0] - end === 1) {
+      end = _nums.shift();
+    }
+
+    switch (end - start) {
+    case 0:
+      ranges.push(start);
+      break;
+    case 1:
+      ranges.push(start);
+      ranges.push(end);
+      break;
+    default:
+      ranges.push(`${start}-${end}`);
+      break;
+    }
+  }
+
+  return ranges.join();
 }
+
+/*
+if(current - start > 1) {
+        rangesString += `${start}-${current}`;
+      } else {
+        rangesString += `${start},${current}`
+      }
+    }
+*/
 
 module.exports = {
   createCompassPoints : createCompassPoints,

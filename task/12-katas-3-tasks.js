@@ -68,7 +68,9 @@ function* getPermutations(chars) {
  *    [ 1, 6, 5, 10, 8, 7 ] => 18  (buy at 1,6,5 and sell all at 10)
  */
 function getMostProfitFromStockQuotes(quotes) {
-  throw new Error('Not implemented');
+  return quotes.reduce((acc, quote, index, array) => {
+    return acc + (Math.max(...array.slice(index)) - quote);
+  }, 0);
 }
 
 
@@ -94,11 +96,35 @@ function UrlShortener() {
 
 UrlShortener.prototype = {
   encode(url) {
-    throw new Error('Not implemented');
+    const urlAllowedChars = this.urlAllowedChars.split('');
+    const _url = url.split('');
+    const newCodes = [];
+
+    const codesString = _url.reduce((acc, char) => {
+      return acc + (urlAllowedChars.findIndex(_char => _char === char) + 10);
+    }, '').split('');
+
+    while(codesString.length) {
+      newCodes.push(codesString.splice(0, 4).join(''));
+    }
+
+    return newCodes.map(code => String.fromCharCode(code)).join('');
   },
 
   decode(code) {
-    throw new Error('Not implemented');
+    const urlAllowedChars = this.urlAllowedChars.split('');
+    const _code = code.split('');
+    const oldCodes = [];
+
+    const codesString = _code.reduce((acc, code) => {
+      return acc + code.charCodeAt();
+    }, '').split('');
+
+    while(codesString.length) {
+      oldCodes.push((+codesString.splice(0, 2).join('') - 10));
+    }
+
+    return oldCodes.map(code => urlAllowedChars[code]).join('');
   }
 };
 

@@ -54,7 +54,7 @@ function parseBankAccount(bankAccount) {
   };
 
   this.associate = this.associate ? this.associate : getAssociate();
-  
+
   let result = '';
 
   const lines = bankAccount.split('\n');
@@ -149,7 +149,91 @@ const PokerRank = {
 };
 
 function getPokerHandRank(hand) {
-  throw new Error('Not implemented');
+  const convertHand = hand => {
+    return hand.map(card => {
+      const rank = parseInt(card);
+      const suit = card[card.length - 1];
+
+      if(rank) {
+        return {
+          rank,
+          suit
+        };
+      } else {
+        switch(card[0]) {
+        case 'J': return {
+          rank: 11,
+          suit
+        };
+        case 'Q': return {
+          rank: 12,
+          suit
+        };
+        case 'K': return {
+          rank: 13,
+          suit
+        };
+        case 'A': return {
+          rank: 14,
+          suit
+        };
+        }
+      }
+    }).sort((first, second) => second.rank - first.rank);
+  };
+
+  const isSameSuit = hand => {
+    return hand.every(card => card.suit === hand[0].suit);
+  };
+
+  const isSequentialRank = hand => {
+    return hand.every((card, index, array) => {
+      if(index !== array.length - 1) {
+        const diff = card.rank - array[index + 1].rank;
+
+        return diff === 1 || diff === 9 && card.rank === 14;
+      } else {
+        return true;
+      }
+    }, true);
+  };
+
+  const getNumberEntries = hand => {
+    return Object.values(hand
+      .reduce((acc, card) => {
+        if(acc[card.rank]) {
+          acc[card.rank].push(card);
+          return acc;
+        } else {
+          return Object.assign(acc, { [card.rank]: [card] });
+        }
+      }, {}))
+      .map(entry => entry.length)
+      .sort((first, second) => second - first);
+  };
+
+  const _hand = convertHand(hand);
+  const entries = getNumberEntries(_hand);
+
+  if(isSameSuit(_hand) && isSequentialRank(_hand)) {
+    return PokerRank.StraightFlush;
+  } else if(entries[0] === 4) {
+    return PokerRank.FourOfKind;
+  } else if(entries[0] === 3 && entries[1] === 2) {
+    return PokerRank.FullHouse;
+  } else if(isSameSuit(_hand)) {
+    return PokerRank.Flush;
+  } else if(isSequentialRank(_hand)) {
+    return PokerRank.Straight;
+  } else if(entries[0] === 3) {
+    return PokerRank.ThreeOfKind;
+  } else if(entries[0] === 2 && entries[1] === 2) {
+    return PokerRank.TwoPairs;
+  } else if(entries[0] === 2 ) {
+    return PokerRank.OnePair;
+  }
+
+  return PokerRank.HighCard;
 }
 
 

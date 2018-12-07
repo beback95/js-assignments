@@ -278,15 +278,6 @@ function extractRanges(nums) {
   return ranges.join();
 }
 
-/*
-if(current - start > 1) {
-        rangesString += `${start}-${current}`;
-      } else {
-        rangesString += `${start},${current}`
-      }
-    }
-*/
-
 module.exports = {
   createCompassPoints : createCompassPoints,
   expandBraces : expandBraces,

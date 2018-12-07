@@ -236,7 +236,6 @@ function getPokerHandRank(hand) {
   return PokerRank.HighCard;
 }
 
-
 /**
  * Returns the rectangles sequence of specified figure.
  * The figure is ASCII multiline string comprised of minus signs -, plus signs +,
@@ -268,8 +267,58 @@ function getPokerHandRank(hand) {
  *    '|             |\n'+              '+-----+\n'           '+-------------+\n'
  *    '+-------------+\n'
  */
+
+// check the figure on    +--...--+
+//                        |       |
+//                                :
+//                                |
+//                                +
+
 function* getFigureRectangles(figure) {
-  throw new Error('Not implemented');
+  function getRectangleParams(figure, [posI, posJ]) {
+    if([undefined, ' '].includes(figure[posI][posJ + 1])
+    || !'+|'.includes(figure[posI + 1][posJ])) {
+      return 'does not exist';
+    }
+
+    for(let i = posI, lengthI = figure.length; i < lengthI; i++) {
+      for(let j= posJ + 1, lengthJ = figure[i].length; j < lengthJ; j++) {
+        if(figure[i][j] === '+' && '+|'.includes(figure[i + 1][j])) {
+          for(let k = posI + 1;; k++) {
+            if(figure[k][j] === '+') {
+              const width = j - posJ - 1;
+              const height = k - posI - 1;
+
+              return [width, height];
+            }
+          }
+        }
+      }
+    }
+
+    return 'does not exist';
+  }
+
+  function renderRectangle([width, height]) {
+    const topOrBottom = `+${'-'.repeat(width)}+\n`;
+    const sides = `|${' '.repeat(width)}|\n`;
+
+    return [topOrBottom, ...sides.repeat(height), topOrBottom].join('');
+  }
+
+  const _figure = figure.split('\n');
+
+  for(let i = 0, lengthI = _figure.length - 1; i < lengthI; i++) {
+    for(let j = 0, lengthJ = _figure[i].length; j < lengthJ; j++) {
+      if(_figure[i][j] === '+') {
+        const params = getRectangleParams(_figure, [i, j]);
+
+        if(params !== 'does not exist') {
+          yield renderRectangle(params);
+        }
+      }
+    }
+  }
 }
 
 module.exports = {

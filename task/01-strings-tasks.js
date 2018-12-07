@@ -53,7 +53,7 @@ function getStringLength(value) {
  */
 function getStringFromTemplate(firstName, lastName) {
   return `Hello, ${firstName} ${lastName}!`;
-  
+
 }
 
 /**
@@ -220,7 +220,7 @@ function getRectangleString(width, height) {
  *   'hello' => 'uryyb'
  *   'Why did the chicken cross the road?' => 'Jul qvq gur puvpxra pebff gur ebnq?'
  *   'Gb trg gb gur bgure fvqr!' => 'To get to the other side!'
- *   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' => 
+ *   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' =>
  *          'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
@@ -279,7 +279,7 @@ function isString(value) {
 function getCardId(value) {
   const r = 'A234567891JQK';
   const s = '♣♦♥♠';
-  
+
   return r.indexOf(value[0]) + s.lastIndexOf(value[value.length - 1]) * 13;
 }
 

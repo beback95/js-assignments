@@ -42,7 +42,7 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
       } else {
         path.push(point);
       }
-    }
+    };
   })();
 
   function transformPuzzle(puzzle) {

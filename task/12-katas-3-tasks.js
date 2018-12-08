@@ -29,10 +29,21 @@
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
   const _puzzle = transformPuzzle(puzzle);
-  const _map = [[0, -1], [-1, 0], [0, 1], [1, 0]];
+  const _map = [[-1, 0], [0, 1], [1, 0], [0, -1]];
   const _searchStr = searchStr.split('');
   const _searchChar = _searchStr.shift();
-  let flag = false;
+
+  const pathStore = (function(){
+    const path = [];
+
+    return function(point) {
+      if(!point) {
+        return path;
+      } else {
+        path.push(point);
+      }
+    }
+  })();
 
   function transformPuzzle(puzzle) {
     const empty = Array.from({ length: puzzle[0].length + 2 }, () => ' ');
@@ -41,48 +52,42 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
       return [' ', ...string.split(''), ' '];
     });
 
-    return [ empty, ..._puzzle, empty ];
+    return [empty, ..._puzzle, empty];
   }
 
-  function check(row, col, searchStr) {
+  function check(row, col, search)  {
     const stack = [];
 
     _map.forEach(dir => {
       const curRow = row + dir[0];
       const curCol = col + dir[1];
 
-      if(_puzzle[curRow][curCol] === searchStr[0]) {
-
-        stack.push([curRow, curCol, searchStr.slice(1)]);
+      if(_puzzle[curRow][curCol] === search[0]) {
+        stack.push([curRow, curCol, search.slice(1), stack.length + 1]);
+        pathStore([curRow, curCol]);
       }
     });
 
-    while(stack.length) {
-      const [row, col, searchStr] = stack.pop();
-
-      if(searchStr.length === 0) {
-        if(row === 1 && col === 1) { //жесткий костыль для слова ARENA.
-          flag = false;
-        } else {
-          flag = true;
-        }
-      }
-
-      check(row, col, searchStr);
+    if(search.length === 0 || stack.some(elem => {
+      return check(...elem);
+    })) {
+      return true;
     }
   }
 
   for(let row = 0, lrows = _puzzle.length; row < lrows; row++) {
     for(let col = 0, lcols = _puzzle[row].length; col < lcols; col++) {
-      if(_puzzle[row][col] === _searchChar) {
-        check(row, col, _searchStr);
+      if(_puzzle[row][col] === _searchChar && check(row, col, _searchStr)) {
+        const path = pathStore();
+        const lastPoint = path[path.length - 1];
+
+        if(!(searchStr, lastPoint[0] === row && lastPoint[1] === col)) {
+          return true;
+        }
       }
     }
   }
-
-  return flag;
 }
-
 
 /**
  * Returns all permutations of the specified string.
@@ -98,14 +103,14 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-  function *HeapsAlgorithm(length, rest) {
+  function *shake(length, rest) {
     if (length === 1) {
       yield rest.join('');
     } else {
       let temp;
 
       for (let i = 0; i < length; i++) {
-        yield *HeapsAlgorithm(length - 1, rest);
+        yield *shake(length - 1, rest);
 
         if (length % 2 === 0) {
           temp = rest[i];
@@ -120,7 +125,7 @@ function* getPermutations(chars) {
     }
   }
 
-  yield *HeapsAlgorithm(chars.length, chars.split(''));
+  yield *shake(chars.length, chars.split(''));
 }
 
 

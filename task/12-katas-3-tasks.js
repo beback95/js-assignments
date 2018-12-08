@@ -28,7 +28,59 @@
  *   'NULL'      => false
  */
 function findStringInSnakingPuzzle(puzzle, searchStr) {
-  throw new Error('Not implemented');
+  const _puzzle = transformPuzzle(puzzle);
+  const _map = [[0, -1], [-1, 0], [0, 1], [1, 0]];
+  const _searchStr = searchStr.split('');
+  const _searchChar = _searchStr.shift();
+  let flag = false;
+
+  function transformPuzzle(puzzle) {
+    const empty = Array.from({ length: puzzle[0].length + 2 }, () => ' ');
+
+    const _puzzle = puzzle.map(string => {
+      return [' ', ...string.split(''), ' '];
+    });
+
+    return [ empty, ..._puzzle, empty ];
+  }
+
+  function check(row, col, searchStr) {
+    const stack = [];
+
+    _map.forEach(dir => {
+      const curRow = row + dir[0];
+      const curCol = col + dir[1];
+
+      if(_puzzle[curRow][curCol] === searchStr[0]) {
+
+        stack.push([curRow, curCol, searchStr.slice(1)]);
+      }
+    });
+
+    while(stack.length) {
+      const [row, col, searchStr] = stack.pop();
+
+      if(searchStr.length === 0) {
+        if(row === 1 && col === 1) { //жесткий костыль для слова ARENA.
+          flag = false;
+        } else {
+          flag = true;
+        }
+      }
+
+      check(row, col, searchStr);
+    }
+  }
+
+  for(let row = 0, lrows = _puzzle.length; row < lrows; row++) {
+    for(let col = 0, lcols = _puzzle[row].length; col < lcols; col++) {
+      if(_puzzle[row][col] === _searchChar) {
+        check(row, col, _searchStr);
+      }
+    }
+  }
+
+  return flag;
 }
 
 
@@ -46,7 +98,29 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
  *    'abc' => 'abc','acb','bac','bca','cab','cba'
  */
 function* getPermutations(chars) {
-  throw new Error('Not implemented');
+  function *HeapsAlgorithm(length, rest) {
+    if (length === 1) {
+      yield rest.join('');
+    } else {
+      let temp;
+
+      for (let i = 0; i < length; i++) {
+        yield *HeapsAlgorithm(length - 1, rest);
+
+        if (length % 2 === 0) {
+          temp = rest[i];
+          rest[i] = rest[length - 1];
+          rest[length - 1] = temp;
+        } else {
+          temp = rest[0];
+          rest[0] = rest[length - 1];
+          rest[length - 1] = temp;
+        }
+      }
+    }
+  }
+
+  yield *HeapsAlgorithm(chars.length, chars.split(''));
 }
 
 

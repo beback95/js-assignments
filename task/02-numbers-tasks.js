@@ -204,7 +204,7 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  if(n < 2 ) {
+  if(n < 2) {
     return false;
   }
 

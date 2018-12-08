@@ -330,13 +330,6 @@ function sortDigitNamesByNumericOrder(a) {
   return a.sort((a, b) => m.indexOf(a.slice(0, 2)) - m.indexOf(b.slice(0, 2)));
 }
 
-/*
-// eslint-disable-next-line
-const map = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']; 
-
-return arr.sort((first, second) => map.indexOf(first) - map.indexOf(second));
-*/
-
 /**
  * Returns the sum of all items in the specified array of numbers
  *

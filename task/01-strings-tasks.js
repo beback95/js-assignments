@@ -277,10 +277,10 @@ function isString(value) {
 
 
 function getCardId(value) {
-  const r = 'A234567891JQK';
-  const s = '♣♦♥♠';
+  const rank = 'A234567891JQK'.indexOf(value[0]);
+  const suit = '♣♦♥♠'.lastIndexOf(value[value.length - 1]);
 
-  return r.indexOf(value[0]) + s.lastIndexOf(value[value.length - 1]) * 13;
+  return rank + suit * 13;
 }
 
 module.exports = {

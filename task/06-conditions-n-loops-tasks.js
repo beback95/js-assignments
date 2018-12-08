@@ -35,7 +35,7 @@ function getFizzBuzz(num) {
     return 'Fizz';
   } else if (num % 5 === 0) {
     return 'Buzz';
-  } 
+  }
 
   return num;
 }
@@ -53,7 +53,7 @@ function getFizzBuzz(num) {
  *   10 => 3628800
  */
 function getFactorial(n) {
-  return n > 1 ? n * getFactorial(n - 1) : 1; 
+  return n > 1 ? n * getFactorial(n - 1) : 1;
 }
 
 
@@ -75,7 +75,7 @@ function getSumBetweenNumbers(n1, n2) {
 
 
 /**
- * Returns true, if a triangle can be built with the specified sides a,b,c and false 
+ * Returns true, if a triangle can be built with the specified sides a,b,c and false
  * in any other ways.
  *
  * @param {number} a
@@ -195,7 +195,7 @@ function findFirstSingleChar(str) {
 
 
 /**
- * Returns the string representation of math interval, specified by two points and 
+ * Returns the string representation of math interval, specified by two points and
  * include / exclude flags.
  * See the details: https://en.wikipedia.org/wiki/Interval_(mathematics)
  *
@@ -219,7 +219,7 @@ function findFirstSingleChar(str) {
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
   const startBracket = isStartIncluded ? '[' : '(';
   const endBracket = isEndIncluded ? ']' : ')';
- 
+
   return `${startBracket}${Math.min(a, b)}, ${Math.max(a, b)}${endBracket}`;
 }
 
@@ -293,7 +293,7 @@ function isCreditCardNumber(ccn) {
   sum = sum % 10 === 0 ? 0 : 10 - sum % 10;
   const ccnStr = ccn.toString();
 
-  return sum === +ccnStr[ccnStr.length - 1] % 10;                     
+  return sum === +ccnStr[ccnStr.length - 1] % 10;
 }
 
 
@@ -345,12 +345,12 @@ function isBracketsBalanced(str) {
 
   for(let i = 0, l = str.length; i < l; i++) {
     if (/[([{<]/.test(str[i])) {
-      stack.push(str[i]); 
-    } else if (/[)\]}>]/.test(str[i]) 
+      stack.push(str[i]);
+    } else if (/[)\]}>]/.test(str[i])
       && stack[stack.length - 1] === map[str[i]]) {
       stack.pop();
     } else {
-      stack.push(str[i]); 
+      stack.push(str[i]);
     }
   }
 
@@ -413,7 +413,7 @@ function timespanToHumanString(startDate, endDate) {
   } else if (time <= 545 * 24 * 60 * 60 * 1000) {
     return 'a year ago';
   }
-    
+
   return `${Math.round(time / 365 / 24 / 60 / 60 / 1000)} years ago`;
 }
 
@@ -463,6 +463,7 @@ function toNaryString(num, n) {
  */
 function getCommonDirectoryPath(pathes) {
   let path = '';
+
   for (let i = 0; i < pathes[0].length; i++) {
     let flag = true;
     for (let j = 1; j < pathes.length; j++) {
@@ -478,6 +479,7 @@ function getCommonDirectoryPath(pathes) {
       break;
     }
   }
+
   return path.slice(0, path.lastIndexOf('/') + 1);
 }
 
@@ -554,7 +556,7 @@ function getMatrixProduct(m1, m2) {
 function evaluateTicTacToePosition(position) {
   const rotate = matrix => {
     const flipMatrix = matrix => (
-      matrix[0].map((column, index) => 
+      matrix[0].map((column, index) =>
         matrix.map(row => row[index])
       )
     );
@@ -572,7 +574,7 @@ function evaluateTicTacToePosition(position) {
   const rows = position.map(elem => elem.join(''));
   const cols = rotate(position).map(elem => elem.join(''));
   const mainDiagonal = getDiagonal(position).join('');
-  const sideDiagonal = getDiagonal(rotate(position)).join('');  
+  const sideDiagonal = getDiagonal(rotate(position)).join('');
   const elements = [...rows, ...cols, mainDiagonal, sideDiagonal];
 
   return elements.reduce((acc, elem) => {

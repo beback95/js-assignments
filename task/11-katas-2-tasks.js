@@ -268,12 +268,6 @@ function getPokerHandRank(hand) {
  *    '+-------------+\n'
  */
 
-// check the figure on    +--...--+
-//                        |       |
-//                                :
-//                                |
-//                                +
-
 function* getFigureRectangles(figure) {
   function getRectangleParams(figure, [posI, posJ]) {
     if([undefined, ' '].includes(figure[posI][posJ + 1])

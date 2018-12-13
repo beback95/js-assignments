@@ -81,7 +81,7 @@ function findStringInSnakingPuzzle(puzzle, searchStr) {
         const path = pathStore();
         const lastPoint = path[path.length - 1];
 
-        if(!(searchStr, lastPoint[0] === row && lastPoint[1] === col)) {
+        if(!(searchStr && lastPoint[0] === row && lastPoint[1] === col)) {
           return true;
         }
       }
